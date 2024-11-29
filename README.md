@@ -62,3 +62,4 @@ For detailed explanation on how things work, checkout the [guide](http://vuejs-t
 [version-badge]: https://img.shields.io/badge/version-2.1.0-blue.svg
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg
 # FrontEndStella
+# FrontEndStella

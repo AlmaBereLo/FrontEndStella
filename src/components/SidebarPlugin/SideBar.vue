@@ -43,6 +43,7 @@
     props: {
       title: {
         type: String,
+        
         default: 'Sistema de inventario'
       },
       backgroundColor: {

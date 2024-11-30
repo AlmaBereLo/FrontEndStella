@@ -11,8 +11,20 @@ import Icons from 'src/pages/Icons.vue'
 import Maps from 'src/pages/Maps.vue'
 import Notifications from 'src/pages/Notifications.vue'
 import Upgrade from 'src/pages/Upgrade.vue'
+///Paginas de componentes 
 import Agencias from 'src/pages/Agencias.vue'
 import Departamentos from 'src/pages/Departamentos.vue'
+import Areas from '../pages/Areas.vue'
+import Categorias from '../pages/Categorias.vue'
+import Marcas from '../pages/Marcas.vue'
+import Modelos from '../pages/Modelos.vue'
+import Monitores from '../pages/Monitores.vue'
+import SistemaOperativo from '../pages/SistemaOperativo.vue'
+import Procesadores from '../pages/Procesadores.vue'
+import DiscoDuro from '../pages/DiscoDuro.vue'
+import Ram from '../pages/Ram.vue'
+import Antivirus from '../pages/Antivirus.vue'
+import Office from '../pages/Office.vue'
 const routes = [
   {
     path: '/',
@@ -58,6 +70,61 @@ const routes = [
         path: 'departamentos',  // Cambié la ruta base a 'icons'
         name: 'Departamentos',
         component: Departamentos,
+      },
+      {
+        path: 'areas',  // Cambié la ruta base a 'icons'
+        name: 'Areas',
+        component: Areas,
+      },
+      {
+        path: 'categorias',  // Cambié la ruta base a 'icons'
+        name: 'Categorias',
+        component: Categorias,
+      },
+      {
+        path: 'marcas',  // Cambié la ruta base a 'icons'
+        name: 'Marcas',
+        component: Marcas,
+      },
+      {
+        path: 'modelos',  // Cambié la ruta base a 'icons'
+        name: 'Modelos',
+        component: Modelos,
+      },
+      {
+        path: 'monitores',  // Cambié la ruta base a 'icons'
+        name: 'Monitores',
+        component: Monitores,
+      },
+      {
+        path: 'sistemaoperativo',  // Cambié la ruta base a 'icons'
+        name: 'SistemaOperativo',
+        component: SistemaOperativo,
+      },
+      {
+        path: 'procesadores',  // Cambié la ruta base a 'icons'
+        name: 'Procesadores',
+        component: Procesadores,
+      },
+      {
+        path: 'discoduro',  // Cambié la ruta base a 'icons'
+        name: 'DiscoDuro',
+        component: DiscoDuro,
+      },
+      {
+        path: 'ram',  // Cambié la ruta base a 'icons'
+        name: 'Ram',
+        component: Ram,
+      },
+      {
+        path: 'antivirus',  // Cambié la ruta base a 'icons'
+        name: 'Antivirus',
+        component: Antivirus,
+      },
+      {
+        path: 'office',  // Cambié la ruta base a 'icons'
+        name: 'Office',
+        component: Office,
       },
       {
         path: 'maps',

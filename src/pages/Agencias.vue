@@ -39,7 +39,7 @@
 
     <!-- Tabla de agencias -->
     <div class="table-responsive">
-      <table class="table table-bordered table-hover text-center">
+      <table class="table table-striped table-bordered dt-responsive nowrap" cellspacing="0" width="100%">
         <thead class="thead-dark">
           <tr>
             <th scope="col" style="width: 5%;">#</th>
@@ -69,6 +69,7 @@
 <script>
 import axios from "axios";
 
+const apiUrl = "https://d854-189-164-39-38.ngrok-free.app/api"
 export default {
   data() {
     return {
@@ -85,44 +86,42 @@ export default {
     this.fetchAgencias();
   },
   methods: {
-    openForm() {
-      this.showForm = true;
-      this.editMode = false;
-      this.resetForm();
-    },
-    cancelForm() {
-      this.showForm = false;
-      this.resetForm();
-    },
-    resetForm() {
-      this.formData = {
-        id_agencia: null,
-        nombre_age: "",
-      };
-    },
+    
+    // Obtener todas las agencias
     async fetchAgencias() {
       try {
-        const response = await axios.get("http://backend-stella.test/api/agencia");
+        // Realiza la solicitud GET usando axios
+        const response = await axios.get(`${apiUrl}/agencia`, {
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        });
+
+        // Los datos ya vienen parseados en response.data
+        console.log("Datos obtenidos:", response.data);
+
+        // Verifica si la respuesta es un array
         if (Array.isArray(response.data)) {
           this.agencias = response.data;
         } else {
           console.error("Datos no válidos recibidos de la API");
         }
       } catch (error) {
+        // Manejo de errores
         console.error("Error al obtener los datos de la API:", error);
       }
     },
+
+
+    // Guardar o actualizar agencia
     async guardarAgencia() {
       try {
         if (this.formData.id_agencia) {
           // Actualizar agencia existente
-          await axios.put(
-            `http://backend-stella.test/api/agencia/${this.formData.id_agencia}`,
-            this.formData
-          );
+          await axios.put(`${apiUrl}/agencia/${this.formData.id_agencia}`, this.formData);
         } else {
           // Crear nueva agencia
-          await axios.post("http://backend-stella.test/api/agencia", this.formData);
+          await axios.post("${apiUrl}/agencia", this.formData);
         }
         this.fetchAgencias();
         this.cancelForm();
@@ -130,28 +129,49 @@ export default {
         console.error("Error al guardar la agencia:", error);
       }
     },
-    editAgency(agency) {
-      this.formData = { ...agency };
-      this.showForm = true;
-      this.editMode = true;
-    },
+
+    // Eliminar una agencia
     async eliminarAgencia(id) {
       if (confirm("¿Estás seguro de eliminar esta agencia?")) {
         try {
-          await axios.delete(`http://backend-stella.test/api/agencia/${id}`);
+          await axios.delete(`${apiUrl}/agencia/${id}`);
           this.fetchAgencias();
         } catch (error) {
           console.error("Error al eliminar la agencia:", error);
         }
       }
     },
+
+    // Mostrar el formulario para agregar o editar
+    openForm() {
+      this.showForm = true;
+      this.editMode = false;
+      this.resetForm();
+    },
+
+    // Cancelar el formulario
+    cancelForm() {
+      this.showForm = false;
+      this.resetForm();
+    },
+
+    // Resetear los datos del formulario
+    resetForm() {
+      this.formData = {
+        id_agencia: null,
+        nombre_age: "",
+      };
+    },
+
+    // Editar una agencia
+    editAgency(agency) {
+      this.formData = { ...agency };  // Asignar los datos de la agencia al formulario
+      this.showForm = true;
+      this.editMode = true;
+    },
   },
 };
 </script>
-
-<style>
-/* Mantén tus estilos aquí */
-</style>
 
 
 <style>

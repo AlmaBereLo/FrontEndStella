@@ -13,6 +13,5 @@
   </script>
   
   <style scoped>
-  /* Estilos para la página Agencias */
+  /* Estilos para la página Agencias */
   </style>
-  

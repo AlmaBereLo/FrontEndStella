@@ -13,23 +13,25 @@
     <div v-if="showForm" class="modal-overlay" @click.self="cancelForm">
       <div class="card modal-content">
         <div class="card-header">
-          <h4 class="mb-0" style="text-align: center;">{{ editMode ? 'Editar Agencia' : 'Agregar Agencia' }}</h4>
+          <h4 class="mb-0" style="text-align: center;">
+            {{ editMode ? 'Editar Agencia' : 'Agregar Agencia' }}
+          </h4>
         </div>
         <div class="card-body">
-          <form @submit.prevent="saveAgency">
+          <form @submit.prevent="guardarAgencia">
             <div class="form-group">
-              <label for="name">Nombre Agencia</label>
+              <label for="nombre_age">Nombre Agencia</label>
               <input 
                 type="text"
-                id="name"
-                v-model="form.name"
+                id="nombre_age"
+                v-model="formData.nombre_age"
                 class="form-control"
                 placeholder="Nombre de la agencia"
                 required
               />
             </div>
-            <button type="submit" class="btn btn-success mr-2" style="color:green;">Guardar</button>
-            <button type="button" class="btn btn-warning mr-2" style="color: firebrick;" @click="cancelForm">Cancelar</button>
+            <button type="submit" class="btn btn-success mr-2">Guardar</button>
+            <button type="button" class="btn btn-warning mr-2" @click="cancelForm">Cancelar</button>
           </form>
         </div>
       </div>
@@ -46,14 +48,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(agency, index) in agencies" :key="agency.id">
-            <td>{{ index + 1 }}</td>
-            <td>{{ agency.name }}</td>
+          <tr v-for="agencia in agencias" :key="agencia.id_agencia">
+            <td>{{ agencia.id_agencia }}</td>
+            <td>{{ agencia.nombre_age }}</td>
             <td>
-              <button class="btn btn-warning btn-sm" @click="editAgency(agency)">
+              <button class="btn btn-warning btn-sm" @click="editAgency(agencia)">
                 <i class="fa-solid fa-pen-to-square" style="color: #FFD43B;"></i> Editar
               </button>
-              <button class="btn btn-danger btn-sm" @click="deleteAgency(agency.id)">
+              <button class="btn btn-danger btn-sm" @click="eliminarAgencia(agencia.id_agencia)">
                 <i class="fa-solid fa-trash" style="color: #ff3333;"></i> Eliminar
               </button>
             </td>
@@ -65,20 +67,22 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   data() {
     return {
       showForm: false,
       editMode: false,
-      form: {
-        id: null,
-        name: ''
+      agencias: [],
+      formData: {
+        id_agencia: null,
+        nombre_age: "",
       },
-      agencies: [
-        { id: 1, name: 'Agencia Centro' },
-        { id: 2, name: 'Agencia Norte' }
-      ]
     };
+  },
+  mounted() {
+    this.fetchAgencias();
   },
   methods: {
     openForm() {
@@ -91,40 +95,64 @@ export default {
       this.resetForm();
     },
     resetForm() {
-      this.form = {
-        id: null,
-        name: ''
+      this.formData = {
+        id_agencia: null,
+        nombre_age: "",
       };
     },
-    saveAgency() {
-      if (this.editMode) {
-        const index = this.agencies.findIndex((agency) => agency.id === this.form.id);
-        if (index !== -1) {
-          this.agencies.splice(index, 1, { ...this.form });
+    async fetchAgencias() {
+      try {
+        const response = await axios.get("http://backend-stella.test/api/agencia");
+        if (Array.isArray(response.data)) {
+          this.agencias = response.data;
+        } else {
+          console.error("Datos no válidos recibidos de la API");
         }
-      } else {
-        const newAgency = {
-          ...this.form,
-          id: this.agencies.length ? Math.max(...this.agencies.map((a) => a.id)) + 1 : 1
-        };
-        this.agencies.push(newAgency);
+      } catch (error) {
+        console.error("Error al obtener los datos de la API:", error);
       }
-      this.showForm = false;
-      this.resetForm();
+    },
+    async guardarAgencia() {
+      try {
+        if (this.formData.id_agencia) {
+          // Actualizar agencia existente
+          await axios.put(
+            `http://backend-stella.test/api/agencia/${this.formData.id_agencia}`,
+            this.formData
+          );
+        } else {
+          // Crear nueva agencia
+          await axios.post("http://backend-stella.test/api/agencia", this.formData);
+        }
+        this.fetchAgencias();
+        this.cancelForm();
+      } catch (error) {
+        console.error("Error al guardar la agencia:", error);
+      }
     },
     editAgency(agency) {
-      this.form = { ...agency };
+      this.formData = { ...agency };
       this.showForm = true;
       this.editMode = true;
     },
-    deleteAgency(id) {
-      if (confirm('¿Estás seguro de eliminar esta agencia?')) {
-        this.agencies = this.agencies.filter((agency) => agency.id !== id);
+    async eliminarAgencia(id) {
+      if (confirm("¿Estás seguro de eliminar esta agencia?")) {
+        try {
+          await axios.delete(`http://backend-stella.test/api/agencia/${id}`);
+          this.fetchAgencias();
+        } catch (error) {
+          console.error("Error al eliminar la agencia:", error);
+        }
       }
-    }
-  }
+    },
+  },
 };
 </script>
+
+<style>
+/* Mantén tus estilos aquí */
+</style>
+
 
 <style>
 .container {

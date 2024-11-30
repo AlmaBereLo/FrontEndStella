@@ -19,7 +19,7 @@ import App from "./App.vue";
 
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
-
+import axios from "vue-axios"
 import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
@@ -30,7 +30,7 @@ import "./registerServiceWorker";
 // plugin setup
 Vue.use(VueRouter);
 Vue.use(LightBootstrap);
-
+Vue.use(axios);
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes

@@ -1,15 +1,11 @@
 <template>
   <div class="container mt-4">
-    <h2 class="text-center mb-4">Gestión de Agencias</h2>
-
-    <!-- Botón para agregar agencia -->
+    <h2 class="typo-line mb-4">Gestión de Agencias</h2>
     <div class="text-right mb-4">
       <button class="btn btn-primary" @click="openForm">
         <i class="fa-solid fa-plus"></i> Agregar
       </button>
     </div>
-
-    <!-- Formulario flotante para crear/editar agencias -->
     <div v-if="showForm" class="modal-overlay" @click.self="cancelForm">
       <div class="card modal-content">
         <div class="card-header">
@@ -40,8 +36,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Tabla de agencias -->
     <div class="table-responsive">
       <table class="table table-striped table-hover text-center">
         <thead class="thead-dark">
@@ -71,7 +65,6 @@
 </template>
 <script>
 import axios from "axios";
-
 const apiUrl = "https://d854-189-164-39-38.ngrok-free.app/api";
 export default {
   data() {
@@ -89,32 +82,23 @@ export default {
     this.fetchAgencias();
   },
   methods: {
-    // Obtener todas las agencias
     async fetchAgencias() {
       try {
-        // Realiza la solicitud GET usando axios
         const response = await axios.get(`${apiUrl}/agencia`, {
           headers: {
             "ngrok-skip-browser-warning": "true",
           },
         });
-
-        // Los datos ya vienen parseados en response.data
         console.log("Datos obtenidos:", response.data);
-
-        // Verifica si la respuesta es un array
         if (Array.isArray(response.data)) {
           this.agencias = response.data;
         } else {
           console.error("Datos no válidos recibidos de la API");
         }
       } catch (error) {
-        // Manejo de errores
         console.error("Error al obtener los datos de la API:", error);
       }
     },
-
-    // Guardar o actualizar agencia
     async guardarAgencia() {
       try {
         if (this.formData.id_agencia) {
@@ -130,7 +114,6 @@ export default {
         console.error("Error al guardar la agencia:", error);
       }
     },
-
     // Eliminar una agencia
     async eliminarAgencia(id) {
       if (confirm("¿Estás seguro de eliminar esta agencia?")) {
@@ -142,20 +125,17 @@ export default {
         }
       }
     },
-
     // Mostrar el formulario para agregar o editar
     openForm() {
       this.showForm = true;
       this.editMode = false;
       this.resetForm();
     },
-
     // Cancelar el formulario
     cancelForm() {
       this.showForm = false;
       this.resetForm();
     },
-
     // Resetear los datos del formulario
     resetForm() {
       this.formData = {
@@ -163,7 +143,6 @@ export default {
         nombre_age: "",
       };
     },
-
     // Editar una agencia
     editAgency(agency) {
       this.formData = { ...agency }; // Asignar los datos de la agencia al formulario
@@ -173,69 +152,3 @@ export default {
   },
 };
 </script>
-
-
-<style>
-
-.card {
-  border: 1px solid #dee2e6;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  transition: transform 0.3s, box-shadow 0.3s;
-  background-color: #fff;
-}
-
-.card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
-
-.card-header {
-  background-color: #343a40;
-  padding: 10px 15px;
-  font-size: 1.25em;
-  font-weight: bold;
-  color: #000000;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.card-body {
-  padding: 15px;
-  font-size: 1em;
-  color: #495057;
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  max-width: 600px;
-  width: 100%;
-}
-
-
-.text-center {
-  text-align: center;
-}
-
-.mb-4 {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-</style>
-
-
-
-
-

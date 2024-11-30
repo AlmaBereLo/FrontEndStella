@@ -20,6 +20,9 @@ import App from "./App.vue";
 // LightBootstrap plugin
 import LightBootstrap from "./light-bootstrap-main";
 
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
+
 // router setup
 import routes from "./routes/routes";
 
